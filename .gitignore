@@ -1,0 +1,12 @@
+# Ambiente Virtual do Python
+.venv/
+__pycache__/
+
+# Banco de Dados
+database.db
+
+# Dependências do Node.js
+node_modules/
+
+# Arquivos do sistema
+.DS_Store
