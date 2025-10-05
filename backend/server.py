@@ -1,4 +1,4 @@
-# server.py - VERSÃO FINAL COM AJUSTE FINO NO JWT
+# server.py - VERSÃO COM A CORREÇÃO FINAL DA COMUNIDADE
 import os
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -17,12 +17,7 @@ app.config["JWT_SECRET_KEY"] = "sua-chave-secreta-super-segura"
 app.config["JWT_HEADER_NAME"] = "Authorization"
 app.config["JWT_HEADER_TYPE"] = "Bearer"
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(days=1)
-
-# --- LINHA ADICIONADA PARA O TESTE FINAL ---
-# Força a biblioteca a procurar o token apenas nos cabeçalhos (headers)
 app.config["JWT_TOKEN_LOCATION"] = ["headers"]
-# --------------------------------------------
-
 jwt = JWTManager(app)
 
 # --- CONFIGURAÇÃO DO BANCO DE DADOS ---
@@ -73,7 +68,10 @@ def login_user():
     password = data.get('password')
     user = User.query.filter_by(email=email).first()
     if user and bcrypt.check_password_hash(user.password_hash, password):
-        access_token = create_access_token(identity=user.id)
+        # ==================================================================
+        # A CORREÇÃO ESTÁ AQUI! Transformamos o ID em string.
+        access_token = create_access_token(identity=str(user.id))
+        # ==================================================================
         return jsonify(token=access_token), 200
     return jsonify({"msg": "Email ou senha inválidos."}), 401
 
