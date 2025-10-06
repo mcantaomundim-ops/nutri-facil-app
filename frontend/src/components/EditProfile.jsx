@@ -4,9 +4,10 @@ import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import PageLayout from './PageLayout';
 
-const API_URL = 'http://127.0.0.1:5000';
+// ===== APONTANDO PARA A API EM PRODUÇÃO (RENDER) =====
+const API_URL = 'https://nutri-facil-backend.onrender.com';
 
-const EditProfile = ( ) => {
+const EditProfile = (  ) => {
     const [formData, setFormData] = useState({
         name: '',
         age: '',

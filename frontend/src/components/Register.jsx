@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import PageLayout from './PageLayout';
 
-const API_URL = 'http://127.0.0.1:5000';
+// ===== APONTANDO PARA A API EM PRODUÇÃO (RENDER) =====
+const API_URL = 'https://nutri-facil-backend.onrender.com';
 
-const Register = ( ) => {
+const Register = (  ) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();

@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import PageLayout from './PageLayout'; // 1. ADICIONANDO O LAYOUT PADRÃO
 
-const API_URL = 'http://127.0.0.1:5000'; // 2. USANDO A URL COMPLETA
+// ===== APONTANDO PARA A API EM PRODUÇÃO (RENDER) =====
+const API_URL = 'https://nutri-facil-backend.onrender.com';
 
-const OnboardingStep2 = ( ) => {
+const OnboardingStep2 = (  ) => {
     const [mealsPerDay, setMealsPerDay] = useState('4');
     const [wheyMeals, setWheyMeals] = useState('1');
     const [wheyProteinGrams, setWheyProteinGrams] = useState('30');
