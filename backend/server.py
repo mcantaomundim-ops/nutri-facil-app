@@ -292,6 +292,60 @@ def update_profile():
 
 
 # ==================================================================
+# --- ROTA DA BIBLIOTECA DE ALIMENTOS ---
+# ==================================================================
+@app.route('/api/meal-options', methods=['POST'])
+@jwt_required()
+def get_meal_options():
+    # 1. Pega os macros necessários que o frontend enviou
+    data = request.get_json()
+    required_protein = data.get('protein', 0)
+    required_carbs = data.get('carbs', 0)
+    required_fat = data.get('fat', 0)
+
+    # 2. Busca todos os alimentos de cada categoria no banco de dados
+    protein_foods = Food.query.filter_by(category='Proteína').all()
+    carb_foods = Food.query.filter_by(category='Carboidrato').all()
+    fat_foods = Food.query.filter_by(category='Gordura').all()
+
+    # 3. Calcula a quantidade necessária de cada alimento para atingir o macro desejado
+    protein_options = []
+    for food in protein_foods:
+        if food.protein_per_100g > 0:
+            # (Macro necessário / Macro por 100g) * 100 = Quantidade em gramas
+            amount_needed = (required_protein / food.protein_per_100g) * 100
+            protein_options.append({
+                'name': food.name,
+                'amount': round(amount_needed) 
+            })
+
+    carb_options = []
+    for food in carb_foods:
+        if food.carbs_per_100g > 0:
+            amount_needed = (required_carbs / food.carbs_per_100g) * 100
+            carb_options.append({
+                'name': food.name,
+                'amount': round(amount_needed)
+            })
+
+    fat_options = []
+    for food in fat_foods:
+        if food.fat_per_100g > 0:
+            amount_needed = (required_fat / food.fat_per_100g) * 100
+            fat_options.append({
+                'name': food.name,
+                'amount': round(amount_needed)
+            })
+            
+    # 4. Retorna a lista de opções para o frontend
+    return jsonify({
+        'protein_options': protein_options,
+        'carb_options': carb_options,
+        'fat_options': fat_options
+    })
+
+
+# ==================================================================
 # --- ROTA DO DASHBOARD 2.0 ---
 # ==================================================================
 @app.route('/api/dashboard', methods=['GET'])
