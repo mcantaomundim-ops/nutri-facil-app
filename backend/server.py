@@ -157,6 +157,42 @@ def calculate_meal_plan(user, total_metrics):
 
 # --- ROTAS DA API ---
 
+# ===== ROTA SECRETA PARA POPULAR O BANCO DE DADOS DE ALIMENTOS =====
+@app.route('/api/seed-database', methods=['GET'])
+def seed_database():
+    foods_to_add = [
+        # Proteínas
+        {'name': 'Peito de Frango Grelhado', 'category': 'Proteína', 'protein_per_100g': 31, 'carbs_per_100g': 0, 'fat_per_100g': 3.6},
+        {'name': 'Patinho Moído (90/10)', 'category': 'Proteína', 'protein_per_100g': 28, 'carbs_per_100g': 0, 'fat_per_100g': 10},
+        {'name': 'Tilápia Assada', 'category': 'Proteína', 'protein_per_100g': 26, 'carbs_per_100g': 0, 'fat_per_100g': 2.7},
+        {'name': 'Ovo Cozido (unidade)', 'category': 'Proteína', 'protein_per_100g': 13, 'carbs_per_100g': 1.1, 'fat_per_100g': 11}, # Ajustado para 100g
+        
+        # Carboidratos
+        {'name': 'Arroz Branco Cozido', 'category': 'Carboidrato', 'protein_per_100g': 2.7, 'carbs_per_100g': 28, 'fat_per_100g': 0.3},
+        {'name': 'Batata Doce Cozida', 'category': 'Carboidrato', 'protein_per_100g': 1.6, 'carbs_per_100g': 20, 'fat_per_100g': 0.1},
+        {'name': 'Aveia em Flocos', 'category': 'Carboidrato', 'protein_per_100g': 17, 'carbs_per_100g': 66, 'fat_per_100g': 7},
+        {'name': 'Pão Integral (fatia)', 'category': 'Carboidrato', 'protein_per_100g': 13, 'carbs_per_100g': 41, 'fat_per_100g': 4.5}, # Ajustado para 100g
+
+        # Gorduras
+        {'name': 'Castanha-do-Pará', 'category': 'Gordura', 'protein_per_100g': 14, 'carbs_per_100g': 12, 'fat_per_100g': 66},
+        {'name': 'Azeite de Oliva Extra Virgem', 'category': 'Gordura', 'protein_per_100g': 0, 'carbs_per_100g': 0, 'fat_per_100g': 100},
+        {'name': 'Abacate', 'category': 'Gordura', 'protein_per_100g': 2, 'carbs_per_100g': 9, 'fat_per_100g': 15}
+    ]
+    
+    count = 0
+    for food_data in foods_to_add:
+        # Verifica se o alimento já existe para não criar duplicatas
+        existing_food = Food.query.filter_by(name=food_data['name']).first()
+        if not existing_food:
+            new_food = Food(**food_data)
+            db.session.add(new_food)
+            count += 1
+            
+    db.session.commit()
+    
+    return jsonify({"msg": f"{count} novos alimentos adicionados ao banco de dados."}), 200
+
+
 # ... (Rotas de register, login, onboarding, profile permanecem as mesmas) ...
 @app.route('/api/register', methods=['POST'])
 def register_user():
