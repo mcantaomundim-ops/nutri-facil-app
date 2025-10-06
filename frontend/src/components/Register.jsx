@@ -1,13 +1,14 @@
 // src/components/Register.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// ===== 1. IMPORTAR O LINK =====
+import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import PageLayout from './PageLayout';
 
 // ===== APONTANDO PARA A API EM PRODUÇÃO (RENDER) =====
 const API_URL = 'https://nutri-facil-backend.onrender.com';
 
-const Register = (  ) => {
+const Register = (   ) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -36,7 +37,8 @@ const Register = (  ) => {
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Senha" required />
                 <button type="submit">Registrar</button>
             </form>
-             <p>Já tem uma conta? <a href="/login">Login</a></p>
+             {/* ===== 2. SUBSTITUIR <a> POR <Link> ===== */}
+             <p>Já tem uma conta? <Link to="/login">Login</Link></p>
         </div>
       </PageLayout>
     );
