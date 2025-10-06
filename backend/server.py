@@ -32,7 +32,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'da
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-# --- MODELO DO BANCO DE DADOS ---
+# --- MODELOS DO BANCO DE DADOS ---
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False) 
@@ -49,6 +49,19 @@ class User(db.Model):
     whey_carbs_grams = db.Column(db.Float, default=0)
     def __repr__(self):
         return f'<User {self.email}>'
+
+# ===== NOVO MODELO PARA A BIBLIOTECA DE ALIMENTOS =====
+class Food(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    category = db.Column(db.String(50), nullable=False) # Ex: 'Proteína', 'Carboidrato', 'Gordura'
+    # Macros por 100 gramas do alimento
+    protein_per_100g = db.Column(db.Float, default=0)
+    carbs_per_100g = db.Column(db.Float, default=0)
+    fat_per_100g = db.Column(db.Float, default=0)
+
+    def __repr__(self):
+        return f'<Food {self.name}>'
 
 # ==================================================================
 # --- LÓGICA DE CÁLCULO 2.0 ---
