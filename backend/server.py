@@ -10,9 +10,16 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 # --- CONFIGURAÇÕES INICIAIS ---
 app = Flask(__name__)
 
-# ===== CONFIGURAÇÃO DE CORS PARA PRODUÇÃO =====
-# Permite requisições apenas do seu frontend na Vercel.
-CORS(app, resources={r"/api/*": {"origins": "https://nutri-facil-app.vercel.app"}} )
+# ===== CONFIGURAÇÃO DE CORS PARA PRODUÇÃO E DESENVOLVIMENTO =====
+# Permite requisições do seu frontend na Vercel e do seu ambiente local.
+CORS(app, resources={
+    r"/api/*": {
+        "origins": [
+            "https://nutri-facil-app.vercel.app", 
+            "http://localhost:5173"
+        ]
+    }
+} )
 
 bcrypt = Bcrypt(app)
 
