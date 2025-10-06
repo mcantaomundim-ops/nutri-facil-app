@@ -9,7 +9,8 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 
 # --- CONFIGURAÇÕES INICIAIS ---
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}}  )
+# ===== ALTERAÇÃO CRÍTICA: Permitindo acesso de qualquer origem para testes =====
+CORS(app)
 bcrypt = Bcrypt(app)
 
 # --- Configuração do JWT ---
@@ -268,10 +269,3 @@ def get_dashboard_data():
 # --- INICIALIZAÇÃO ---
 with app.app_context():
     db.create_all()
-
-# ... (seu código termina aqui)
-
-with app.app_context():
-    db.create_all()
-
-# Forçando uma nova atualização para o Render
