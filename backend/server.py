@@ -269,3 +269,9 @@ def get_dashboard_data():
 with app.app_context():
     db.create_all()
 
+# ... (seu código termina aqui)
+
+with app.app_context():
+    db.create_all()
+
+# Forçando uma nova atualização para o Render
