@@ -1,25 +1,16 @@
-// src/components/MealOptionsModal.jsx
+// src/components/MealOptionsModal.jsx - VERSÃO FINAL FUNCIONAL
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 
-// ===== CORREÇÃO =====
-// A URL da API foi atualizada para corresponder ao endereço que o backend espera,
-// conforme configurado no CORS do arquivo server.py.
-// Usaremos o endereço da Vercel, que é onde seu backend provavelmente está publicado
-// ou será publicado. Se você estiver rodando o backend localmente,
-// poderia usar 'http://127.0.0.1:5000' aqui durante o teste.
-const API_URL = 'https://nutri-facil-app.vercel.app';
+// A URL da API aponta para o backend publicado no Render.
+const API_URL = 'https://nutri-facil-backend.onrender.com';
 
-// O componente recebe 3 "props":
-// 1. isOpen: um booleano que diz se o modal deve estar visível
-// 2. onClose: uma função para fechar o modal, que será chamada pelo botão "Fechar"
-// 3. meal: o objeto da refeição clicada, contendo os macros
-const MealOptionsModal = ({ isOpen, onClose, meal }  ) => {
+const MealOptionsModal = ({ isOpen, onClose, meal } ) => {
     const [mealOptions, setMealOptions] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Esta função só será executada se o modal estiver aberto (isOpen)
+        // A função só é executada se o modal estiver aberto e tiver uma refeição.
         if (!isOpen || !meal) {
             return;
         }
@@ -34,7 +25,7 @@ const MealOptionsModal = ({ isOpen, onClose, meal }  ) => {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`,
                     },
-                    // Enviamos os macros da refeição selecionada para o backend
+                    // Envia os macros da refeição selecionada para o backend.
                     body: JSON.stringify({
                         protein: meal.protein,
                         carbs: meal.carbs,
@@ -43,7 +34,7 @@ const MealOptionsModal = ({ isOpen, onClose, meal }  ) => {
                 });
 
                 if (!response.ok) {
-                    // Se a resposta não for OK, tentamos ler a mensagem de erro do backend
+                    // Tenta ler a mensagem de erro do backend para um feedback mais claro.
                     const errorData = await response.json().catch(() => null);
                     const errorMessage = errorData?.msg || 'Falha ao buscar opções de refeição.';
                     throw new Error(errorMessage);
@@ -54,24 +45,24 @@ const MealOptionsModal = ({ isOpen, onClose, meal }  ) => {
 
             } catch (error) {
                 toast.error(error.message);
-                onClose(); // Fecha o modal em caso de erro
+                onClose(); // Fecha o modal em caso de erro para não travar a tela.
             } finally {
                 setIsLoading(false);
             }
         };
 
         fetchMealOptions();
-    }, [isOpen, meal, onClose]); // O useEffect depende dessas variáveis
+    }, [isOpen, meal, onClose]); // O useEffect é re-executado se alguma dessas props mudar.
 
-    // Se o modal não estiver aberto, não renderiza nada
+    // Se o modal não estiver aberto, não renderiza nada.
     if (!isOpen) {
         return null;
     }
 
     return (
-        // O "overlay" é o fundo escuro que cobre a tela inteira
+        // O "overlay" é o fundo escuro que cobre a tela inteira.
         <div className="modal-overlay" onClick={onClose}>
-            {/* O "modal-content" é a caixa branca no centro. O e.stopPropagation() impede que o clique dentro da caixa feche o modal. */}
+            {/* O "modal-content" é a caixa branca. O e.stopPropagation() impede que o clique dentro da caixa feche o modal. */}
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-header">
                     <h3>Opções para a Refeição {meal.meal_number}</h3>
