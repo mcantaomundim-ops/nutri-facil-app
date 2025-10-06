@@ -1,90 +1,132 @@
-/* Estilo geral para a aplicação */
+/* App.css - VERSÃO FINAL COM GRID LAYOUT */
+
+:root {
+  --verde-fundo: #f0f8f0;
+  --verde-principal: #28a745;
+  --verde-escuro: #218838;
+  --verde-titulo: #0c3b0c;
+  --verde-borda: #a3b1a3;
+  --verde-brilho-foco: rgba(40, 167, 69, 0.25);
+  --branco: #ffffff;
+  --preto-suave: #333;
+  --cinza-texto: #606770;
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: #f4f7f6;
   margin: 0;
-  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--verde-fundo);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* Alinha no topo para o dashboard não pular */
   min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-/* O contêiner principal para nossos formulários */
-.form-container {
-  background-color: white;
-  max-width: 450px; /* Aumenta um pouco a largura */
-  width: 100%;
-  margin: 2rem auto;
-  padding: 2rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Adiciona uma sombra suave */
+.page-layout {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem; /* Aumenta o espaço entre os itens */
-}
-
-/* Título dos formulários (Login, Registro, etc.) */
-.form-container h2 {
-  text-align: center;
-  margin-top: 0;
-  margin-bottom: 1rem;
-  color: #333;
-}
-
-/* Estilo para os campos de texto (input) e seleção (select) */
-.form-container input,
-.form-container select {
+  align-items: center;
   width: 100%;
-  padding: 12px; /* Deixa os campos mais altos */
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  box-sizing: border-box; /* Garante que o padding não aumente a largura total */
-  font-size: 16px; /* Aumenta o tamanho da fonte dentro dos campos */
+  max-width: 420px; /* Largura padrão para mobile e formulários */
+  margin-top: 20px;
 }
 
-/* Estilo para o botão */
-.form-container button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 6px;
-  border: none; /* Remove a borda do botão */
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
-  transition: background-color 0.2s; /* Efeito suave ao passar o mouse */
-}
-
-/* Efeito ao passar o mouse sobre o botão */
-.form-container button:hover {
-  background-color: #0056b3;
-}
-
-/* Estilo para os textos pequenos (Ex: "Não tem uma conta?") */
-.form-container p {
+.app-title {
   text-align: center;
-  color: #555;
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--verde-titulo);
+  margin-bottom: 20px;
 }
 
-/* Estilo para os links dentro dos textos pequenos */
-.form-container p a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
+.form-container {
+  background-color: var(--branco);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
 }
 
-.form-container p a:hover {
-    text-decoration: underline;
-}
+/* ... (Estilos de formulário, botões, etc. permanecem os mesmos) ... */
+.form-container h2 { text-align: center; color: var(--preto-suave); margin-top: 0; margin-bottom: 30px; font-size: 22px; font-weight: 600; }
+.form-container input, .form-container select { width: 100%; padding: 14px; margin-bottom: 18px; border: 1px solid var(--verde-borda); border-radius: 12px; font-size: 16px; box-sizing: border-box; transition: all 0.3s ease; }
+.form-container input:focus, .form-container select:focus { outline: none; border-color: var(--verde-principal); box-shadow: 0 0 0 4px var(--verde-brilho-foco); }
+.form-container button { width: 100%; padding: 14px; border: none; border-radius: 12px; background-color: var(--verde-principal); color: var(--branco); font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: 0 4px 14px 0 rgba(40, 167, 69, 0.3); }
+.form-container button:hover { background-color: var(--verde-escuro); transform: translateY(-1px); box-shadow: 0 6px 20px 0 rgba(40, 167, 69, 0.35); }
+.form-container p { text-align: center; margin-top: 20px; color: var(--cinza-texto); }
+.form-container a { color: var(--verde-principal); text-decoration: none; font-weight: 600; }
+.form-container a:hover { text-decoration: underline; }
+.back-link { display: block; text-align: center; margin-top: 20px; color: var(--cinza-texto); text-decoration: underline; }
 
-/* Estilo para as etiquetas (labels) dos campos */
-.form-container label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    font-weight: bold;
-    color: #444;
+
+/* ================================================================== */
+/* --- ESTILOS DO DASHBOARD (RECONSTRUÍDOS COM GRID) --- */
+/* ================================================================== */
+
+/* Por padrão (mobile), o .dashboard-grid-layout não faz nada de especial */
+.dashboard-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 25px; }
+.dashboard-greeting { margin: 0; font-size: 22px; font-weight: 600; color: var(--preto-suave); text-transform: capitalize; text-align: left; }
+.dashboard-actions { display: flex; align-items: center; gap: 15px; }
+.logout-button, .edit-prefs-button { background: none; border: none; padding: 0; box-shadow: none; width: auto; color: var(--cinza-texto); text-decoration: underline; font-size: 14px; font-weight: 500; cursor: pointer; transition: color 0.2s ease; }
+.logout-button:hover, .edit-prefs-button:hover { background: none; transform: none; border-color: transparent; color: var(--verde-escuro); }
+
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.section-header h3 { font-size: 20px; font-weight: 600; color: var(--preto-suave); margin: 0; }
+
+.metrics-grid { display: grid; gap: 15px; margin-bottom: 15px; }
+.metrics-grid:first-of-type { grid-template-columns: 1fr 1fr; }
+.metrics-grid:last-of-type { grid-template-columns: 1fr 1fr 1fr; }
+.metric-card { background-color: var(--verde-fundo); border: 1px solid #d0e0d0; padding: 15px; border-radius: 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: all 0.2s ease-in-out; }
+.metric-card:hover { transform: translateY(-3px); border-color: var(--verde-principal); }
+.metric-card.large { padding: 25px 15px; }
+.metric-value { font-size: 2rem; font-weight: 700; color: var(--verde-titulo); line-height: 1; }
+.metric-card.large .metric-value { font-size: 2.5rem; }
+.metric-label { font-size: 0.9rem; font-weight: 500; color: var(--cinza-texto); margin-top: 8px; }
+
+.meal-cards-container { display: flex; flex-direction: column; gap: 15px; }
+.meal-card { background-color: var(--branco); border: 1px solid #e0e0e0; border-radius: 12px; padding: 15px; text-align: left; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+.meal-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
+.meal-card-header h4 { margin: 0; font-size: 16px; font-weight: 600; color: var(--preto-suave); }
+.meal-type { font-size: 12px; font-weight: 700; padding: 4px 8px; border-radius: 20px; color: var(--verde-escuro); background-color: var(--verde-fundo); }
+.meal-card-body { display: flex; justify-content: space-around; text-align: center; }
+.meal-macro { display: flex; flex-direction: column; align-items: center; }
+.meal-macro strong { font-size: 18px; font-weight: 700; color: var(--verde-titulo); }
+.meal-macro span { font-size: 12px; color: var(--cinza-texto); margin-top: 2px; }
+.meal-card.whey-meal { background-color: #f0f8f0; border-left: 4px solid var(--verde-principal); }
+.whey-meal .meal-type { color: var(--branco); background-color: var(--verde-principal); }
+
+/* ===== A RECONSTRUÇÃO DO LAYOUT RESPONSIVO COM GRID ===== */
+@media (min-width: 900px) {
+  .page-layout {
+    max-width: 900px; /* Aumenta a largura máxima na página */
+  }
+
+  .dashboard-grid-layout {
+    display: grid;
+    grid-template-areas: /* Define as áreas do nosso grid */
+      "header header"
+      "summary meals";
+    grid-template-columns: 45% 1fr; /* Duas colunas: 45% e o resto */
+    gap: 30px 40px; /* 30px de espaço vertical, 40px horizontal */
+    align-items: flex-start;
+  }
+
+  .dashboard-grid-layout > .dashboard-header {
+    grid-area: header; /* Coloca este item na área "header" */
+  }
+
+  .dashboard-grid-layout > .daily-summary-section {
+    grid-area: summary; /* Coloca este item na área "summary" */
+  }
+
+  .dashboard-grid-layout > .meal-plan-section {
+    grid-area: meals; /* Coloca este item na área "meals" */
+  }
 }
