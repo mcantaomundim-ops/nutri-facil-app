@@ -3,18 +3,17 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import PageLayout from './PageLayout';
-// Futuramente, importaremos nosso modal aqui
-// import MealOptionsModal from './MealOptionsModal'; 
+// ===== 1. IMPORTANDO O MODAL DE VERDADE =====
+import MealOptionsModal from './MealOptionsModal'; 
 
 // ===== APONTANDO PARA A API EM PRODUÇÃO (RENDER) =====
 const API_URL = 'https://nutri-facil-backend.onrender.com';
 
-const Dashboard = ({ setToken }   ) => {
+const Dashboard = ({ setToken }    ) => {
     const [dashboardData, setDashboardData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
-    // ===== 1. NOVOS ESTADOS PARA O MODAL =====
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedMeal, setSelectedMeal] = useState(null);
 
@@ -25,9 +24,7 @@ const Dashboard = ({ setToken }   ) => {
         navigate('/login');
     };
 
-    // ===== 2. FUNÇÃO PARA ABRIR O MODAL =====
     const handleMealClick = (meal) => {
-        // Só abre o modal para refeições sólidas
         if (meal.type === 'Sólida') {
             setSelectedMeal(meal);
             setIsModalOpen(true);
@@ -142,10 +139,9 @@ const Dashboard = ({ setToken }   ) => {
                     </div>
                     <div className="meal-cards-container">
                         {dashboardData.meal_plan && dashboardData.meal_plan.map((meal) => (
-                            // ===== 3. ADICIONANDO O EVENTO DE CLIQUE =====
                             <div 
                                 key={meal.meal_number} 
-                                className={`meal-card ${meal.type === 'Whey' ? 'whey-meal' : 'solid-meal'}`} // Adicionada classe 'solid-meal' para estilização
+                                className={`meal-card ${meal.type === 'Whey' ? 'whey-meal' : 'solid-meal'}`}
                                 onClick={() => handleMealClick(meal)}
                             >
                                 <div className="meal-card-header">
@@ -176,17 +172,12 @@ const Dashboard = ({ setToken }   ) => {
                 </div>
             </div>
 
-            {/* ===== 4. RENDERIZAÇÃO CONDICIONAL DO MODAL (AINDA COMO PLACEHOLDER) ===== */}
-            {isModalOpen && selectedMeal && (
-                <div>
-                    {/* Aqui é onde nosso futuro componente <MealOptionsModal /> será renderizado */}
-                    <h1>Modal Aberto para Refeição {selectedMeal.meal_number}</h1>
-                    <p>Proteínas: {selectedMeal.protein}g</p>
-                    <p>Carboidratos: {selectedMeal.carbs}g</p>
-                    <p>Gorduras: {selectedMeal.fat}g</p>
-                    <button onClick={() => setIsModalOpen(false)}>Fechar</button>
-                </div>
-            )}
+            {/* ===== 2. USANDO O COMPONENTE MODAL DE VERDADE ===== */}
+            <MealOptionsModal 
+                isOpen={isModalOpen} 
+                onClose={() => setIsModalOpen(false)} 
+                meal={selectedMeal} 
+            />
         </PageLayout>
     );
 };

@@ -1,4 +1,4 @@
-# server.py - VERSÃO COM LÓGICA DE CÁLCULO INTELIGENTE
+# server.py - VERSÃO COM LÓGICA DE CÁLCULO INTELIGENTE E CORS CORRIGIDO
 import os
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
@@ -10,16 +10,12 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 # --- CONFIGURAÇÕES INICIAIS ---
 app = Flask(__name__)
 
-# ===== CONFIGURAÇÃO DE CORS PARA PRODUÇÃO E DESENVOLVIMENTO =====
-# Permite requisições do seu frontend na Vercel e do seu ambiente local.
-CORS(app, resources={
-    r"/api/*": {
-        "origins": [
-            "https://nutri-facil-app.vercel.app", 
-            "http://localhost:5173"
-        ]
-    }
-} )
+# ===== CORREÇÃO DE CORS =====
+# Simplificamos a configuração de CORS para permitir requisições de qualquer origem ('*').
+# Isso resolve o erro de bloqueio que estava acontecendo, pois agora o servidor no Render
+# aceitará chamadas vindas do seu 'localhost' e do app na Vercel.
+# A segurança da API continua garantida pelo @jwt_required nas rotas.
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 bcrypt = Bcrypt(app)
 

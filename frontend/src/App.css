@@ -91,7 +91,9 @@ body {
 .metric-label { font-size: 0.9rem; font-weight: 500; color: var(--cinza-texto); margin-top: 8px; }
 
 .meal-cards-container { display: flex; flex-direction: column; gap: 15px; }
-.meal-card { background-color: var(--branco); border: 1px solid #e0e0e0; border-radius: 12px; padding: 15px; text-align: left; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); }
+.meal-card { background-color: var(--branco); border: 1px solid #e0e0e0; border-radius: 12px; padding: 15px; text-align: left; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); transition: all 0.2s ease; }
+.meal-card.solid-meal:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08); border-color: var(--verde-borda); }
+.meal-card.solid-meal { cursor: pointer; } /* Dica visual de que é clicável */
 .meal-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
 .meal-card-header h4 { margin: 0; font-size: 16px; font-weight: 600; color: var(--preto-suave); }
 .meal-type { font-size: 12px; font-weight: 700; padding: 4px 8px; border-radius: 20px; color: var(--verde-escuro); background-color: var(--verde-fundo); }
@@ -128,5 +130,124 @@ body {
 
   .dashboard-grid-layout > .meal-plan-section {
     grid-area: meals; /* Coloca este item na área "meals" */
+  }
+}
+
+/* ================================================================== */
+/* --- ESTILOS DO MODAL DE OPÇÕES DE REFEIÇÃO --- */
+/* ================================================================== */
+
+.modal-overlay {
+  position: fixed; /* Fica fixo na tela, mesmo com scroll */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* Fundo preto semi-transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Garante que fique na frente de tudo */
+  padding: 20px;
+}
+
+.modal-content {
+  background: var(--branco);
+  padding: 25px 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 700px; /* Largura máxima do modal */
+  max-height: 90vh; /* Altura máxima, para não ocupar a tela toda */
+  overflow-y: auto; /* Adiciona scroll se o conteúdo for muito grande */
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+  color: var(--preto-suave);
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+  color: #aaa;
+  padding: 0;
+}
+
+.close-button:hover {
+  color: var(--preto-suave);
+}
+
+.modal-body p {
+  text-align: center;
+  font-size: 18px;
+  color: var(--cinza-texto);
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Uma coluna em telas pequenas */
+  gap: 25px;
+}
+
+.options-column h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--verde-titulo);
+  margin-top: 0;
+  margin-bottom: 10px;
+  border-bottom: 2px solid var(--verde-fundo);
+  padding-bottom: 8px;
+}
+
+.options-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.options-column li {
+  padding: 6px 0;
+  color: var(--preto-suave);
+  font-size: 15px;
+}
+
+.options-column li strong {
+  color: var(--verde-escuro);
+  font-weight: 600;
+}
+
+/* Animação de fade-in para o modal */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Deixa o grid do modal com 3 colunas em telas maiores */
+@media (min-width: 600px) {
+  .options-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
   }
 }
